@@ -60,7 +60,7 @@ public class KNNExactQueryBuilder extends AbstractQueryBuilder<KNNExactQueryBuil
     @Getter
     private boolean ignoreUnmapped;
     @Getter
-    private boolean expandNested;
+    private Boolean expandNested;
 
     public static class Builder {
         private String fieldName;
@@ -69,7 +69,7 @@ public class KNNExactQueryBuilder extends AbstractQueryBuilder<KNNExactQueryBuil
         private boolean ignoreUnmapped;
         private String queryName;
         private float boost = DEFAULT_BOOST;
-        private boolean expandNested;
+        private Boolean expandNested;
 
         public Builder() {}
 
@@ -104,7 +104,7 @@ public class KNNExactQueryBuilder extends AbstractQueryBuilder<KNNExactQueryBuil
         }
 
         public Builder expandNested(Boolean expandNested) {
-            this.expandNested = expandNested == null ? false : expandNested;
+            this.expandNested = expandNested;
             return this;
         }
 
@@ -215,7 +215,8 @@ public class KNNExactQueryBuilder extends AbstractQueryBuilder<KNNExactQueryBuil
         }
 
         BitSetProducer parentFilter = context.getParentFilter();
-        KNNBuilderAndParserUtils.validateExpandNested(expandNested, parentFilter);
+        boolean isExpandNested = expandNested == null ? false : expandNested;
+        KNNBuilderAndParserUtils.validateExpandNested(isExpandNested, parentFilter);
 
         log.debug("Creating exact k-NN query for index:{}, field:{}, spaceType:{}", indexName, fieldName, spaceType);
 
@@ -229,7 +230,7 @@ public class KNNExactQueryBuilder extends AbstractQueryBuilder<KNNExactQueryBuil
                     .parentFilter(parentFilter)
                     .spaceType(resolvedSpaceType.getValue())
                     .vectorDataType(vectorDataType)
-                    .expandNested(expandNested)
+                    .expandNested(isExpandNested)
                     .build();
                 break;
             default:
@@ -241,7 +242,7 @@ public class KNNExactQueryBuilder extends AbstractQueryBuilder<KNNExactQueryBuil
                     .parentFilter(parentFilter)
                     .spaceType(resolvedSpaceType.getValue())
                     .vectorDataType(vectorDataType)
-                    .expandNested(expandNested)
+                    .expandNested(isExpandNested)
                     .build();
         }
         return knnExactQuery;

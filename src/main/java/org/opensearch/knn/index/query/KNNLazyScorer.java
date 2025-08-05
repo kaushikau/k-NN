@@ -38,6 +38,9 @@ public class KNNLazyScorer extends Scorer {
             @Override
             public int nextDoc() throws IOException {
                 currentDoc = knnIterator.nextDoc();
+                if (currentDoc < 0 && currentDoc != NO_MORE_DOCS) {
+                    currentDoc = NO_MORE_DOCS;
+                }
                 return currentDoc;
             }
 

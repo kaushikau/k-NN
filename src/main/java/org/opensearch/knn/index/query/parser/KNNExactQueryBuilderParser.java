@@ -95,7 +95,7 @@ public final class KNNExactQueryBuilderParser {
             out.writeOptionalBoolean(builder.isIgnoreUnmapped());
         }
         if (minClusterVersionCheck.apply(EXPAND_NESTED)) {
-            out.writeOptionalBoolean(builder.isExpandNested());
+            out.writeOptionalBoolean(builder.getExpandNested());
         }
     }
 
@@ -165,8 +165,8 @@ public final class KNNExactQueryBuilderParser {
         if (knnExactQueryBuilder.isIgnoreUnmapped()) {
             builder.field(IGNORE_UNMAPPED_FIELD.getPreferredName(), knnExactQueryBuilder.isIgnoreUnmapped());
         }
-        if (knnExactQueryBuilder.isExpandNested()) {
-            builder.field(EXPAND_NESTED_FIELD.getPreferredName(), knnExactQueryBuilder.isExpandNested());
+        if (knnExactQueryBuilder.getExpandNested() != null) {
+            builder.field(EXPAND_NESTED_FIELD.getPreferredName(), knnExactQueryBuilder.getExpandNested());
         }
         builder.field(BOOST_FIELD.getPreferredName(), knnExactQueryBuilder.boost());
         if (knnExactQueryBuilder.queryName() != null) {

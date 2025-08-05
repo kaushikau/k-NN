@@ -128,7 +128,7 @@ public class KNNExactQueryBuilderTests extends KNNTestCase {
             .spaceType(SPACE_TYPE)
             .expandNested(true)
             .build();
-        assertTrue(builder.isExpandNested());
+        assertTrue(builder.getExpandNested());
 
         builder = KNNExactQueryBuilder.builder()
             .fieldName(FIELD_NAME)
@@ -136,10 +136,10 @@ public class KNNExactQueryBuilderTests extends KNNTestCase {
             .spaceType(SPACE_TYPE)
             .expandNested(false)
             .build();
-        assertFalse(builder.isExpandNested());
+        assertFalse(builder.getExpandNested());
 
         builder = KNNExactQueryBuilder.builder().fieldName(FIELD_NAME).vector(QUERY_VECTOR).spaceType(SPACE_TYPE).build();
-        assertFalse(builder.isExpandNested());
+        assertNull(builder.getExpandNested());
     }
 
     public void testDoToQuery_Normal() {
@@ -244,7 +244,7 @@ public class KNNExactQueryBuilderTests extends KNNTestCase {
 
         assertNull(builder.getSpaceType()); // Should be null by default
         assertFalse(builder.isIgnoreUnmapped()); // Should be false by default
-        assertFalse(builder.isExpandNested()); // Should be false by default
+        assertNull(builder.getExpandNested()); // Should be null by default
     }
 
     public void testNestedFieldsWithExpandNested() {
@@ -312,9 +312,9 @@ public class KNNExactQueryBuilderTests extends KNNTestCase {
                 assertEquals(SPACE_TYPE, deserializedKnnExactQueryBuilder.getSpaceType());
                 assertFalse(deserializedKnnExactQueryBuilder.isIgnoreUnmapped());
                 if (version.onOrAfter(IndexUtil.minimalRequiredVersionMap.get("expand_nested_docs"))) {
-                    assertTrue(deserializedKnnExactQueryBuilder.isExpandNested());
+                    assertTrue(deserializedKnnExactQueryBuilder.getExpandNested());
                 } else {
-                    assertFalse(deserializedKnnExactQueryBuilder.isExpandNested());
+                    assertNull(deserializedKnnExactQueryBuilder.getExpandNested());
                 }
             }
         }

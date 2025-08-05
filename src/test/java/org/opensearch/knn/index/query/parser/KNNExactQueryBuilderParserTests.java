@@ -60,7 +60,7 @@ public class KNNExactQueryBuilderParserTests extends KNNTestCase {
         builder.startObject(knnExactQueryBuilder.fieldName());
         builder.field(KNNExactQueryBuilder.VECTOR_FIELD.getPreferredName(), knnExactQueryBuilder.vector());
         builder.field(KNNExactQueryBuilder.SPACE_TYPE_FIELD.getPreferredName(), knnExactQueryBuilder.getSpaceType());
-        builder.field(KNNExactQueryBuilder.EXPAND_NESTED_FIELD.getPreferredName(), knnExactQueryBuilder.isExpandNested());
+        builder.field(KNNExactQueryBuilder.EXPAND_NESTED_FIELD.getPreferredName(), knnExactQueryBuilder.getExpandNested());
         builder.endObject();
         builder.endObject();
 

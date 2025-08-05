@@ -25,13 +25,10 @@ import org.opensearch.knn.plugin.script.KNNScoringUtil;
 import java.io.IOException;
 import java.util.List;
 
-import static org.opensearch.knn.common.KNNConstants.PROPERTIES;
 import static org.opensearch.knn.common.KNNConstants.QUERY;
-import static org.opensearch.knn.common.KNNConstants.TYPE_NESTED;
 import static org.opensearch.knn.common.KNNConstants.EXACT_KNN;
 import static org.opensearch.knn.common.KNNConstants.VECTOR;
 import static org.opensearch.knn.common.KNNConstants.METHOD_HNSW;
-import static org.opensearch.knn.common.KNNConstants.TYPE_KNN_VECTOR;
 
 @Log4j2
 public class KNNExactQueryIT extends KNNRestTestCase {
@@ -69,6 +66,7 @@ public class KNNExactQueryIT extends KNNRestTestCase {
             String docId = results.get(i).getDocId();
             assertEquals(expectedResults[Integer.parseInt(docId)], results.get(i).getScore(), 0.00001);
         }
+        deleteKNNIndex(INDEX_NAME);
     }
 
     @SneakyThrows
@@ -97,6 +95,7 @@ public class KNNExactQueryIT extends KNNRestTestCase {
             String docId = results.get(i).getDocId();
             assertEquals(expectedResults[Integer.parseInt(docId)], results.get(i).getScore(), 0.00001);
         }
+        deleteKNNIndex(INDEX_NAME);
     }
 
     @SneakyThrows
@@ -121,6 +120,7 @@ public class KNNExactQueryIT extends KNNRestTestCase {
             String docId = results.get(i).getDocId();
             assertEquals(expectedResults[Integer.parseInt(docId)], results.get(i).getScore(), 0.00001);
         }
+        deleteKNNIndex(INDEX_NAME);
     }
 
     @SneakyThrows
@@ -149,6 +149,7 @@ public class KNNExactQueryIT extends KNNRestTestCase {
             String docId = results.get(i).getDocId();
             assertEquals(expectedResults[Integer.parseInt(docId)], results.get(i).getScore(), 0.00001);
         }
+        deleteKNNIndex(INDEX_NAME);
     }
 
     @SneakyThrows
@@ -177,6 +178,7 @@ public class KNNExactQueryIT extends KNNRestTestCase {
             String docId = results.get(i).getDocId();
             assertEquals(expectedResults[Integer.parseInt(docId)], results.get(i).getScore(), 0.00001);
         }
+        deleteKNNIndex(INDEX_NAME);
     }
 
     @SneakyThrows
@@ -205,6 +207,7 @@ public class KNNExactQueryIT extends KNNRestTestCase {
             String docId = results.get(i).getDocId();
             assertEquals(expectedResults[Integer.parseInt(docId)], results.get(i).getScore(), 0.00001);
         }
+        deleteKNNIndex(INDEX_NAME);
     }
 
     @SneakyThrows
@@ -230,6 +233,7 @@ public class KNNExactQueryIT extends KNNRestTestCase {
             String docId = results.get(i).getDocId();
             assertEquals(expectedResults[Integer.parseInt(docId)], results.get(i).getScore(), 0.00001);
         }
+        deleteKNNIndex(INDEX_NAME);
     }
 
     @SneakyThrows
@@ -257,6 +261,7 @@ public class KNNExactQueryIT extends KNNRestTestCase {
             String docId = results.get(i).getDocId();
             assertEquals(expectedResults[Integer.parseInt(docId)], results.get(i).getScore(), 0.00001);
         }
+        deleteKNNIndex(INDEX_NAME);
     }
 
     @SneakyThrows
@@ -287,6 +292,7 @@ public class KNNExactQueryIT extends KNNRestTestCase {
             String docId = results.get(i).getDocId();
             assertEquals(expectedResults[Integer.parseInt(docId)], results.get(i).getScore(), 0.00001);
         }
+        deleteKNNIndex(INDEX_NAME);
     }
 
     @SneakyThrows
@@ -328,6 +334,7 @@ public class KNNExactQueryIT extends KNNRestTestCase {
             String docId = results.get(i).getDocId();
             assertEquals(expectedResults[Integer.parseInt(docId) / 2], results.get(i).getScore(), 0.00001);
         }
+        deleteKNNIndex(INDEX_NAME);
     }
 
     public void createTestIndex(boolean isLucene) throws IOException {
@@ -395,24 +402,4 @@ public class KNNExactQueryIT extends KNNRestTestCase {
             .engine(isLucene ? KNNEngine.LUCENE.getName() : KNNEngine.FAISS.getName())
             .build();
     }
-
-    private void createNestedTestIndex(boolean isLucene) throws IOException {
-        XContentBuilder builder = XContentFactory.jsonBuilder()
-            .startObject()
-            .startObject(PROPERTIES)
-            .startObject(FIELD_NAME_NESTED)
-            .field("type", TYPE_NESTED)
-            .startObject(PROPERTIES)
-            .startObject(FIELD_NAME)
-            .field("type", TYPE_KNN_VECTOR)
-            .field("dimension", DIMENSION)
-            .endObject()
-            .endObject()
-            .endObject()
-            .endObject()
-            .endObject();
-        String mapping = builder.toString();
-        createKnnIndex(INDEX_NAME, mapping);
-    }
-
 }
